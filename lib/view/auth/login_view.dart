@@ -9,60 +9,77 @@ import 'package:shop_together_flutter/view/auth/register_view.dart';
 import '../../widget/custom_text.dart';
 
 
-class LoginView extends GetWidget<AuthViewModel> {
+class LoginView extends StatefulWidget {
+
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
- 
+  var il = "";
+
+  @override
+  void initState() {
+    il =" l@gmail.com";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 50,
-          right: 20,
-          left: 20,
-        ),
-          child: Form(
-            key: _formKey,
-          child: Column(
-                  children: [
-                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            text: "Benvenuto",
-                            fontSize: 30,),
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(RegisterView());
-                            },
-                            child: CustomText(
-                              text: "Registrati",
-                              color: Colors.orange,
-                              fontSize: 18,
-                            ),),
-                        ],
-                      ),
-              CustomText(
-                text: "Accedi per continuare",
-                color: Colors.grey,
-                fontSize: 14,
+    return GetBuilder<AuthViewModel>(
+        builder: (controller) {
+          // Some code that use viewModel
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0.0,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.only(
+                top: 50,
+                right: 20,
+                left: 20,
               ),
-              SizedBox(height: 30,),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          text: "Benvenuto",
+                          fontSize: 30,),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(RegisterView());
+                          },
+                          child: CustomText(
+                            text: "Registrati",
+                            color: Colors.orange,
+                            fontSize: 18,
+                          ),),
+                      ],
+                    ),
+                    CustomText(
+                      text: "Accedi per continuare",
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                    SizedBox(height: 30,),
                     TextFormField(
                       textInputAction: TextInputAction.next,
+                      initialValue: il,
                       validator: validateEmail,
                       onSaved:(value) {
                         controller.email=value!;
                       },
+
                       decoration: formDecoration('Indirizzo email',Icons.mail_outline,
                       ),),
-              SizedBox(height: 30,),
+                    SizedBox(height: 30,),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       validator: validatePassword,
@@ -71,14 +88,14 @@ class LoginView extends GetWidget<AuthViewModel> {
                       },
                       decoration: formDecoration('Password',Icons.mail_outline,
                       ),),
-              SizedBox(height: 20,)   ,
-              CustomText(
-                text: 'Password dimenticata?',
-                fontSize: 14,
-                alignment: Alignment.topRight,
-              ),
-              SizedBox(height: 20,),
-              CupertinoButton(
+                    SizedBox(height: 20,)   ,
+                    CustomText(
+                      text: 'Password dimenticata?',
+                      fontSize: 14,
+                      alignment: Alignment.topRight,
+                    ),
+                    SizedBox(height: 20,),
+                    CupertinoButton(
                       borderRadius:  const BorderRadius.all(Radius.circular(10)),
                       onPressed: (){
                         _formKey.currentState!.save();
@@ -89,36 +106,36 @@ class LoginView extends GetWidget<AuthViewModel> {
                       color: Colors.orange,
                       child: const Text('Accedi',
                         style: style16White,),
-              ),
-              SizedBox(height: 20,),
-              CustomText(
-                text: "-Oppure-",
-                alignment: Alignment.center,
-              ),
-              SizedBox(height: 40,),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade50,
-                ),
-               child: CupertinoButton(
-                onPressed: (){
-                  controller.googleSignInMethod();
-                },
-                borderRadius:  const BorderRadius.all(Radius.circular(10)),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/google.png'),
-                    SizedBox(width: 90,),
+                    ),
+                    SizedBox(height: 20,),
                     CustomText(
-                      text: 'Accedi con Google',
-                    )
-                  ],
-                ),
-              ),
-              ),
-              SizedBox(height: 20,),
-              Container(
+                      text: "-Oppure-",
+                      alignment: Alignment.center,
+                    ),
+                    SizedBox(height: 40,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey.shade50,
+                      ),
+                      child: CupertinoButton(
+                        onPressed: (){
+                          controller.googleSignInMethod();
+                        },
+                        borderRadius:  const BorderRadius.all(Radius.circular(10)),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/images/google.png'),
+                            SizedBox(width: 90,),
+                            CustomText(
+                              text: 'Accedi con Google',
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: Colors.grey.shade50,
@@ -137,8 +154,10 @@ class LoginView extends GetWidget<AuthViewModel> {
                         ),
                       ),
                     ),
-        ],
-      ),
-          ),),);
+                  ],
+                ),
+              ),),);
+        });
   }
+
 }

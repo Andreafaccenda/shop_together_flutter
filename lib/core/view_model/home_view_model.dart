@@ -43,5 +43,24 @@ class HomeViewModel extends GetxController {
       update();
     });
   }
+  getFiltraProductName(String nomeProdotto) async{
+    _loading.value = true;
+    List<ProdottiModel> listaElimanare = [];
+    HomeService().getProduts().then((value) {
+      for (int i = 0; i < value.length; i++) {
+        listaElimanare.add(
+            ProdottiModel.fromJson(value[i].data() as Map<dynamic, dynamic>));
+        for (int i = 0; i < listaElimanare.length; i++) {
+          if (listaElimanare[i].nome!.startsWith(nomeProdotto)) {
+            _productModel.add(listaElimanare[i]);
+          }
+        }
+        loading.value=false;
+      }
+      update();
+    });
+}
+
+
 
 }
