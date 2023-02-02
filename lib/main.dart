@@ -1,7 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_together_flutter/routes/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:shop_together_flutter/view/auth/login_view.dart';
+import 'helper/binding.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -11,12 +16,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: RouteManager.onGenerateRoute,
-      initialRoute: RouteManager.loadingPage,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
+      initialBinding: Binding(),
+      home: Scaffold(
+       body: LoginView(),
       ),
     );
   }
