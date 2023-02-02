@@ -16,4 +16,5 @@ class FireStoreUser {
 
     return value as Future<List<UserModel>>;
   }
+
 }

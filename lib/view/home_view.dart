@@ -1,50 +1,58 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:shop_together_flutter/core/services/home_service.dart';
-import 'package:shop_together_flutter/core/view_model/home_view_model.dart';
-import 'package:shop_together_flutter/model/prodotti_model.dart';
-import 'package:shop_together_flutter/widget/custom_text.dart';
+import 'package:shop_together_flutter/view/home_controller.dart';
 
-import 'details_view.dart';
+import '../widget/custom_text.dart';
 
-// ignore: must_be_immutable
-class HomeView extends GetxController {
-  var categoria = "";
-  List<ProdottiModel> allProdotti = [];
-  Rx<List<ProdottiModel>> searchProdotti = Rx<List<ProdottiModel>>([]);
-
+class HomeView extends GetView<HomeController> {
   @override
-  void onInit() {
-    super.onInit();
-    allProdotti=getList();
-    searchProdotti.value=allProdotti;
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-  void filterProdotti(String prodottoNome){
-    List<ProdottiModel> result = [];
-    if(prodottoNome.isEmpty){
-      result = allProdotti;
-    }else{
-      result = allProdotti
-          .where((element) =>)
-    }
-  }
-  List<ProdottiModel> getList(){
-    HomeService().getProduts().then((value) {
-      for (int i = 0; i < value.length; i++) {
-        allProdotti.add(
-            ProdottiModel.fromJson(value[i].data() as Map<dynamic, dynamic>));}
-    });
-    return allProdotti;
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ListView Filter'),
+        centerTitle: true,
+      ),
+        body: SingleChildScrollView(
+        child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              onChanged: (value) => controller.filterProdotti(value),
+              decoration: const InputDecoration(
+                labelText: 'Search',
+                suffixIcon: Icon(Icons.search),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 350,
+              child: Obx(
+                    () => ListView.builder(
+                  itemCount: controller.searchProdotti.value.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) => ListTile(
+                    title: Text(
+                      controller.searchProdotti.value[index].nome.toString(),
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle:
+                    Text(controller.searchProdotti.value[index].categoria.toString()),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),);
   }
 }
