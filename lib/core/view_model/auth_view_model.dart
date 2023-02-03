@@ -56,6 +56,7 @@ class AuthViewModel extends GetxController{
   Future<void> signInWithEmailAndPassword(bool store) async {
     try{
       if (store) {
+        userList = await _user.getUserFromFireStore();
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         var user = getUserFromEmail(email);
@@ -119,7 +120,7 @@ class AuthViewModel extends GetxController{
     for (var user in userList) {
       for (var value in user.values) {
         if (value == email) {
-          return user;
+          return UserModel.fromJson(user);
         }
       }
     }
@@ -147,6 +148,14 @@ class AuthViewModel extends GetxController{
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString('userId') ?? "";
     return user;
+  }
+
+  Future<void> removeSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('userId');
+    prefs.remove('name');
+    prefs.remove('email');
+    prefs.remove('password');
   }
 
 }
