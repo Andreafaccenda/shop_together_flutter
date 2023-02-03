@@ -1,7 +1,11 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_together_flutter/view/auth/login_view.dart';
 import 'package:shop_together_flutter/view/home_view.dart';
 
@@ -12,9 +16,12 @@ import '../services/firestore_user.dart';
 class AuthViewModel extends GetxController{
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   FirebaseAuth _auth = FirebaseAuth.instance;
+  FireStoreUser _user = FireStoreUser();
+
+  late List userList;
 
 
-  late String email , password , name ;
+  late String email , password , name;
 
 
   @override
@@ -31,6 +38,7 @@ class AuthViewModel extends GetxController{
   void onInit() {
     super.onInit();
   }
+
   Future<void> googleSignInMethod() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
@@ -45,10 +53,20 @@ class AuthViewModel extends GetxController{
     });
   }
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<void> signInWithEmailAndPassword(bool store) async {
     try{
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.offAll(HomeView());
+      if (store) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        var user = getUserFromEmail(email);
+        if (user != null)
+          storeSession(user);
+        Get.offAll(HomeView());
+      } else {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        Get.offAll(HomeView());
+      }
 
     }catch(e){
       customSnackBar(
@@ -85,6 +103,29 @@ class AuthViewModel extends GetxController{
     }
   }
 
+  Future<UserModel?> getUserFormId(String id) async {
+    userList = await _user.getUserFromFireStore();
+    for (var user in await userList) {
+      for (var value in user.values) {
+        if (value == id) {
+          return UserModel.fromJson(user);
+        }
+      }
+    }
+    return null;
+  }
+
+  UserModel? getUserFromEmail(String email) {
+    for (var user in userList) {
+      for (var value in user.values) {
+        if (value == email) {
+          return user;
+        }
+      }
+    }
+    return null;
+  }
+
   void saveUser(UserCredential user) async {
     await FireStoreUser().addUserToFireStore(UserModel(
       userId: user.user!.uid,
@@ -92,6 +133,20 @@ class AuthViewModel extends GetxController{
       email: email,
       password: password,
     ));
+  }
+
+  storeSession(UserModel user) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('userId', user.userId.toString());
+    prefs.setString('name', user.name.toString());
+    prefs.setString('email', user.email.toString());
+    prefs.setString('password', user.password.toString());
+  }
+
+  Future<String> getIdSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString('userId') ?? "";
+    return user;
   }
 
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:shop_together_flutter/costanti.dart';
 import 'package:shop_together_flutter/misc/validators.dart';
 import 'package:shop_together_flutter/view/auth/register_view.dart';
 
+import '../../model/user_model.dart';
 import '../../widget/custom_text.dart';
 
 
@@ -18,11 +21,15 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  var il = "";
+  final viewModel = AuthViewModel();
+  TextEditingController _controllerEmail = new TextEditingController();
+  TextEditingController _controllerPassword = new TextEditingController();
 
   @override
   void initState() {
-    il =" l@gmail.com";
+    super.initState();
+    AutoLogin();
+
   }
 
   @override
@@ -70,8 +77,8 @@ class _LoginViewState extends State<LoginView>{
                     ),
                     SizedBox(height: 30,),
                     TextFormField(
+                      controller: _controllerEmail,
                       textInputAction: TextInputAction.next,
-                      initialValue: il,
                       validator: validateEmail,
                       onSaved:(value) {
                         controller.email=value!;
@@ -81,6 +88,7 @@ class _LoginViewState extends State<LoginView>{
                       ),),
                     SizedBox(height: 30,),
                     TextFormField(
+                      controller: _controllerPassword,
                       textInputAction: TextInputAction.next,
                       validator: validatePassword,
                       onSaved:(value) {
@@ -100,7 +108,7 @@ class _LoginViewState extends State<LoginView>{
                       onPressed: (){
                         _formKey.currentState!.save();
                         if(_formKey.currentState!.validate()){
-                          controller.signInWithEmailAndPassword();
+                          controller.signInWithEmailAndPassword(true);
                         }
                       },
                       color: Colors.orange,
@@ -158,6 +166,20 @@ class _LoginViewState extends State<LoginView>{
                 ),
               ),),);
         });
+  }
+
+  AutoLogin() async {
+    var prefId = await viewModel.getIdSession();
+    if (prefId != "") {
+      var user = await viewModel.getUserFormId(prefId);
+      if (user != null) {
+        viewModel.email= user.email!;
+        viewModel.password = user.password!;
+        _controllerEmail.text = user.email!;
+        _controllerPassword.text = user.password!;
+        viewModel.signInWithEmailAndPassword(false);
+      }
+    }
   }
 
 }

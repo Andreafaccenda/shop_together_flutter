@@ -11,10 +11,11 @@ class FireStoreUser {
         .doc(userModel.userId)
         .set(userModel.toJson());
   }
-  Future<List<UserModel>> getUserFromFireStore() async {
-    var value = await _userCollectionRef.get();
 
-    return value as Future<List<UserModel>>;
+  Future<List> getUserFromFireStore() async {
+    QuerySnapshot querySnapshot = await _userCollectionRef.get();
+    final allUsers = querySnapshot.docs.map((doc) => doc.data()).toList();
+    return await allUsers;
   }
 
 }
