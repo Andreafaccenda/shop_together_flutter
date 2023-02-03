@@ -1,20 +1,13 @@
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_together_flutter/view/auth/login_view.dart';
-import 'package:shop_together_flutter/view/home_view.dart';
-
-import '../../costanti.dart';
+import 'package:shop_together_flutter/view/Home/home_view.dart';
+import '../../widget/costanti.dart';
 import '../../model/user_model.dart';
 import '../services/firestore_user.dart';
 
 class AuthViewModel extends GetxController{
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   FirebaseAuth _auth = FirebaseAuth.instance;
   FireStoreUser _user = FireStoreUser();
 
@@ -22,36 +15,6 @@ class AuthViewModel extends GetxController{
 
 
   late String email , password , name;
-
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  Future<void> googleSignInMethod() async {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleSignInAuthentication =
-    await googleUser!.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      idToken: googleSignInAuthentication.idToken,
-      accessToken: googleSignInAuthentication.accessToken,
-    );
-    await _auth.signInWithCredential(credential).then((user) {
-      Get.offAll(HomeView());
-    });
-  }
 
   Future<void> signInWithEmailAndPassword(bool store) async {
     try{
@@ -66,12 +29,13 @@ class AuthViewModel extends GetxController{
       } else {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+        customSnackBar(content: "Login andato a buon fine!");
         Get.offAll(HomeView());
       }
 
     }catch(e){
       customSnackBar(
-        content: 'Error login'+e.toString(),
+        content: 'Errore login.Controlla email e password!',
       );
   }
   }
@@ -81,28 +45,17 @@ class AuthViewModel extends GetxController{
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((user) async {
         saveUser(user);
+        customSnackBar(content: "Account creato");
       });
 
       Get.offAll(LoginView());
     } catch (e) {
       print(e);
       customSnackBar(
-        content: 'Error login account'+e.toString(),
+        content: 'Errore creazione account',
       );
     }
 }
-  Future<void> signOut() async{
-    try {
-      if (!kIsWeb) {
-        await _googleSignIn.signOut();
-      }
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      customSnackBar(
-          content: 'Error signing out. Try again.',
-      );
-    }
-  }
 
   Future<UserModel?> getUserFormId(String id) async {
     userList = await _user.getUserFromFireStore();
@@ -130,7 +83,7 @@ class AuthViewModel extends GetxController{
   void saveUser(UserCredential user) async {
     await FireStoreUser().addUserToFireStore(UserModel(
       userId: user.user!.uid,
-      name: name,
+      nome: name,
       email: email,
       password: password,
     ));
@@ -139,7 +92,7 @@ class AuthViewModel extends GetxController{
   storeSession(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('userId', user.userId.toString());
-    prefs.setString('name', user.name.toString());
+    prefs.setString('name', user.nome.toString());
     prefs.setString('email', user.email.toString());
     prefs.setString('password', user.password.toString());
   }

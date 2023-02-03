@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shop_together_flutter/misc/validators.dart';
+import 'package:shop_together_flutter/widget/validators.dart';
 import '../../core/view_model/auth_view_model.dart';
-import '../../costanti.dart';
+import '../../widget/costanti.dart';
 import '../../widget/custom_text.dart';
 import 'login_view.dart';
 

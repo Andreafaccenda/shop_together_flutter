@@ -1,8 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
-import 'misc/constants.dart';
 
 const primaryColor = Color.fromRGBO(0, 197, 105, 1);
 
