@@ -1,13 +1,14 @@
 import 'dart:ffi';
 
 class ProdottiModel{
-  String? id, nome,produttore,immagine,categoria, prezzo_unitario, quantita,descrizione;
+  String? id, nome,produttore,immagine,categoria, prezzo_unitario, quantita,descrizione,disponibilita,unita_ordinate;
 
 
 
   ProdottiModel({required this.id, required this.nome, required this.produttore,
     required this.immagine,required this.categoria,required this.prezzo_unitario,
-    required this.quantita,required this.descrizione});
+    required this.quantita,required this.descrizione,required this.disponibilita,
+    required this.unita_ordinate});
 
    ProdottiModel.fromJson(Map<dynamic, dynamic> map) {
      if (map == null) {
@@ -21,7 +22,8 @@ class ProdottiModel{
       prezzo_unitario=map['prezzo_unitario'];
       quantita=map['quantita'];
       descrizione=map['descrizione'];
-
+      disponibilita=map['disponibilita'];
+      unita_ordinate=map['unita_ordinate'];
   }
 
   toJson() {
@@ -34,6 +36,8 @@ class ProdottiModel{
       'prezzo_unitario':prezzo_unitario,
       'quantita':quantita,
       'descrizione': descrizione,
+      'disponibilita':disponibilita,
+      'unita_ordinate':unita_ordinate,
     };
   }
 }

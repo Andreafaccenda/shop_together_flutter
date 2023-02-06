@@ -39,7 +39,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
           child: Column(
             children: [
               CustomText(
-                text: "Crea account,",
+                text: "Crea account",
                 fontSize: 30,
               ),
               SizedBox(
@@ -54,7 +54,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                 decoration: formDecoration('Nome',Icons.person,
                 ),),
               SizedBox(
-                height: 15,
+                height: 20,
               ),
               TextFormField(
                 textInputAction: TextInputAction.next,
@@ -65,7 +65,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                 decoration: formDecoration('Indirizzo email',Icons.mail_outline,
                 ),),
               SizedBox(
-                height: 15,
+                height: 20,
               ),
               TextFormField(
                 textInputAction: TextInputAction.next,
@@ -76,7 +76,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                 decoration: formDecoration('Password',Icons.lock_outline,
                 ),),
               SizedBox(
-                height: 15,
+                height: 20,
               ),
               TextFormField(
                 textInputAction: TextInputAction.next,

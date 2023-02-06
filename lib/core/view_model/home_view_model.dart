@@ -5,7 +5,7 @@ import 'package:shop_together_flutter/model/prodotti_model.dart';
 import '../services/home_service.dart';
 
 class HomeViewModel extends GetxController {
-
+  final homeService = HomeService();
   List<CategoriaModel> get categoriaModel => _categoriaModel;
   List<CategoriaModel> _categoriaModel = [];
 
@@ -40,24 +40,7 @@ class HomeViewModel extends GetxController {
       update();
     });
   }
-  getFiltraProductName(String nomeProdotto) async{
-    _loading.value = true;
-    List<ProdottiModel> listaElimanare = [];
-    HomeService().getProduts().then((value) {
-      for (int i = 0; i < value.length; i++) {
-        listaElimanare.add(
-            ProdottiModel.fromJson(value[i].data() as Map<dynamic, dynamic>));
-        for (int i = 0; i < listaElimanare.length; i++) {
-          if (listaElimanare[i].nome!.startsWith(nomeProdotto)) {
-            _productModel.add(listaElimanare[i]);
-          }
-        }
-        loading.value=false;
-      }
-      update();
-    });
-}
-
-
-
+  updateProduct(ProdottiModel prodotto) async{
+    await homeService.updateProduts(prodotto);
+  }
 }

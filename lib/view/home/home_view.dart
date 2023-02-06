@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:shop_together_flutter/model/user_model.dart';
-import 'package:shop_together_flutter/view/auth/login_view.dart';
 import '../../core/view_model/auth_view_model.dart';
 import '../../core/view_model/home_view_model.dart';
 import '../../model/prodotti_model.dart';
@@ -36,56 +36,60 @@ class _HomeViewState extends State<HomeView>{
           ? Center(child: CircularProgressIndicator())
           : Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(top: 80, left: 20, right: 20),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: benvenuto,fontSize: 20,color: Colors.black,),
-                    Container(
-                      width: 70,
-                      height: 30,
-                      decoration: BoxDecoration(color: Colors.orange, borderRadius:
-                      BorderRadius.circular(10),),
+          child: WillPopScope(
+            onWillPop: showExitDialog,
+            child: Container(
+              padding: EdgeInsets.only(top: 80, left: 20, right: 20),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(text: benvenuto,fontSize: 20,color: Colors.black,),
+                      Container(
+                        width: 70,
+                        height: 30,
+                        decoration: BoxDecoration(color: Colors.orange, borderRadius:
+                        BorderRadius.circular(10),),
 
-                      child: Padding(
+                        child: Padding(
 
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
 
-                            Icon(Icons.login_outlined,color:Colors.white,size: 15,),
-                            GestureDetector(
-                              onTap: (){
-                                viewModelAuth.removeSession();
-                              },
-                            child: Padding(padding: const EdgeInsets.only(left: 5),
-                              child: CustomText(text: "Esci",color: Colors.white,fontSize: 14,),),
-                            ),
-                          ],
-                        ),
-                      ),),
-                  ],
-                ),
-                SizedBox(height: 40,),
-                searchText(),
-                SizedBox(height: 30,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: "Categorie:", fontSize: 16,),
-                    CustomText(text: "vedi tutto", fontSize: 12,color: Colors.orange,),],),
-                SizedBox(height: 20,),
-                _listViewCategory(),
-                SizedBox(height: 30,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: "Prodotti:", fontSize: 16,)],),
-                _listViewProducts(),
-              ],),),),),);
+                              Icon(Icons.login_outlined,color:Colors.white,size: 15,),
+                              GestureDetector(
+                                onTap: () async {
+                                  await viewModelAuth.removeSession();
+                                  exit(0);
+                                },
+                              child: Padding(padding: const EdgeInsets.only(left: 5),
+                                child: CustomText(text: "Esci",color: Colors.white,fontSize: 14,),),
+                              ),
+                            ],
+                          ),
+                        ),),
+                    ],
+                  ),
+                  SizedBox(height: 40,),
+                  searchText(),
+                  SizedBox(height: 30,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(text: "Categorie:", fontSize: 16,),
+                      CustomText(text: "vedi tutto", fontSize: 12,color: Colors.orange,),],),
+                  SizedBox(height: 20,),
+                  _listViewCategory(),
+                  SizedBox(height: 30,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(text: "Prodotti:", fontSize: 16,)],),
+                  _listViewProducts(),
+                ],),),
+          ),),),);
   }
 
   Widget searchText(){
@@ -222,4 +226,28 @@ class _HomeViewState extends State<HomeView>{
       });
     }
 
+  Future<bool> showExitDialog()async {
+    return await showDialog(
+        context: context,
+        builder: (context)=> AlertDialog(
+          shape:  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text("Uscita app"),
+          content: const Text("Vuoi uscire dall'applicazione ?"),
+          actions: [
+            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+              onPressed: (){
+              Navigator.of(context).pop(false);
+            }, child: const Text("No"),),
+            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+                onPressed: (){
+              Navigator.of(context).pop(true);
+            }, child: const Text("SI"))
+          ],
+        ));
+  }
+
 }
+
+
