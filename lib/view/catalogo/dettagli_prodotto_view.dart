@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shop_together_flutter/core/view_model/home_view_model.dart';
+import 'package:shop_together_flutter/view/catalogo/prodotti_view_model.dart';
 import '../../model/prodotti_model.dart';
 
 class DettagliProdottoView extends StatefulWidget {

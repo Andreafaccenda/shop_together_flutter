@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shop_together_flutter/core/view_model/auth_view_model.dart';
+import 'package:shop_together_flutter/view/auth/auth_view_model.dart';
 import 'package:shop_together_flutter/widget/costanti.dart';
 import 'package:shop_together_flutter/widget/validators.dart';
 import 'package:shop_together_flutter/view/auth/register_view.dart';
@@ -153,7 +153,7 @@ class _LoginViewState extends State<LoginView>{
       isScrollControlled: true,
       builder: (context) => Container(
         padding: EdgeInsets.fromLTRB(20, 40, 20, 10),
-        height: 250,
+        height: 260,
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
           borderRadius: BorderRadius.only(
@@ -206,11 +206,11 @@ class _LoginViewState extends State<LoginView>{
           title: const Text("Uscita app"),
           content: const Text("Vuoi uscire dall'applicazione ?"),
           actions: [
-            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+            ElevatedButton(style: ElevatedButton.styleFrom( backgroundColor: Colors.orange),
               onPressed: (){
                 Navigator.of(context).pop(false);
               }, child: const Text("No"),),
-            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+            ElevatedButton(style: ElevatedButton.styleFrom( backgroundColor: Colors.orange),
                 onPressed: (){
                  exit(0);
                 }, child: const Text("SI"))

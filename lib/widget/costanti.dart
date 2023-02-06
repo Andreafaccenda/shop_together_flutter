@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-const primaryColor = Color.fromRGBO(0, 197, 105, 1);
-
 InputDecoration formDecoration(String labelText,IconData iconData) {
   return InputDecoration(
     errorStyle: const TextStyle(fontSize: 10),
@@ -34,11 +31,4 @@ const TextStyle style16Black = TextStyle(
     color: Colors.black,
     fontSize: 16,);
 
-SnackBar customSnackBar({required String content}) {
-return SnackBar(
-backgroundColor: Colors.black,
-content: Text(
-content,
-style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),),);
-}
 

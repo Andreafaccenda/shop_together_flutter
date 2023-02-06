@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_together_flutter/view/auth/login_view.dart';
-import 'package:shop_together_flutter/view/Home/home_view.dart';
+import 'package:shop_together_flutter/view/catalogo/prodotti_view.dart';
 import '../../model/user_model.dart';
-import '../services/firestore_user.dart';
+import '../../repository/auth_repository.dart';
 
 class AuthViewModel extends GetxController{
   FirebaseAuth _auth = FirebaseAuth.instance;

@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import '../../core/view_model/auth_view_model.dart';
-import '../../core/view_model/home_view_model.dart';
+import '../auth/auth_view_model.dart';
+import 'prodotti_view_model.dart';
 import '../../model/prodotti_model.dart';
 import '../../widget/custom_text.dart';
 import 'dettagli_prodotto_view.dart';
@@ -236,11 +233,11 @@ class _HomeViewState extends State<HomeView>{
           title: const Text("Uscita app"),
           content: const Text("Vuoi uscire dall'applicazione ?"),
           actions: [
-            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+            ElevatedButton(style: ElevatedButton.styleFrom( backgroundColor: Colors.orange),
               onPressed: (){
               Navigator.of(context).pop(false);
             }, child: const Text("No"),),
-            ElevatedButton(style: ElevatedButton.styleFrom( primary: Colors.orange),
+            ElevatedButton(style: ElevatedButton.styleFrom( backgroundColor: Colors.orange),
                 onPressed: (){
               Navigator.of(context).pop(true);
             }, child: const Text("SI"))
